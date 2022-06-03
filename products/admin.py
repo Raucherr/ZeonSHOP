@@ -1,3 +1,9 @@
 from django.contrib import admin
+from django.contrib import admin
+from .models import *
 
-# Register your models here.
+
+@admin.register(Collection)
+class CollectionAdmin(admin.ModelAdmin):
+    """Representation of a model 'Collection' in the admin interface."""
+    list_display = ('title',)
