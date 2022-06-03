@@ -35,5 +35,5 @@ class Product(models.Model):
 class ProductStyles(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE,
                                 related_name='product_objects')
+    color = ColorField(default='31639c')
     image = models.ImageField(blank=True, upload_to='images/')
-    color = ColorField(default='')
