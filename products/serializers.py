@@ -23,17 +23,10 @@ class ProductsSerializer(serializers.ModelSerializer):
         model = Product
         exclude = ['bestseller', 'novelty']
 
-class ProductObjectsSerializer(serializers.ModelSerializer):
-    """Разрешить визуализацию сложных данных модели коллекции в JSON."""
-
-    class Meta:
-        model = ProductStyles
-        fields = '__all__'
-
 
 class ProductsInCollectionSerializer(serializers.ModelSerializer):
-
-    product_objects = ProductObjectsSerializer(many=True)
+    """Сериализация продуктов в определенной коллекции"""
+    product_objects = ProductStylesSerializer(many=True)
     collection = CollectionsSerializer()
 
     class Meta:

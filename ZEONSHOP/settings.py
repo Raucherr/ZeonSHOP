@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'phonenumber_field',
     'products',
     # 'colorfield',
+    'colorful'
 ]
 
 MIDDLEWARE = [
