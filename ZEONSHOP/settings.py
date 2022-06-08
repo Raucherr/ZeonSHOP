@@ -32,7 +32,8 @@ INSTALLED_APPS = [
     'phonenumber_field',
     'products',
     # 'colorfield',
-    'colorful'
+    'colorful',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
