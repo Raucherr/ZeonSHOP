@@ -5,7 +5,7 @@ from django.core.exceptions import ValidationError
 
 
 def size_line_validator(size_line: str):
-    """Validate size_line field in Product's objects."""
+    """Проверка поля size_line в объектах продукта."""
     first_two = size_line[:2]
     second_two = size_line[3:]
     if (first_two + second_two).isdigit()\
@@ -13,13 +13,13 @@ def size_line_validator(size_line: str):
             and int(first_two) <= int(second_two)\
             and (int(first_two) + int(second_two)) % 2 == 0:
         return size_line
-    raise ValidationError('Size must contain "-" between sizes(both evens) '
-                          'and first size '
-                          'less than second, example: 42-50')
+    raise ValidationError('Размер должен содержать "-" между размерами (оба события)'
+                          'и первый размер '
+                          'меньше второго, пример: 42-50)')
 
 
 class Collection(models.Model):
-    """Collection model, represents Product's category."""
+    """Модель коллекции, представляющая категорию продукта."""
 
     image = models.ImageField(upload_to='images/')
     title = models.CharField(max_length=250)
@@ -33,7 +33,7 @@ class Collection(models.Model):
 
 
 class Product(models.Model):
-    """Product model, represents Product objects."""
+    """Модель продукта, представляющая объекты продукта."""
 
     collection = models.ForeignKey(Collection, on_delete=models.CASCADE,
                                    related_name='collection')
@@ -71,12 +71,12 @@ class Product(models.Model):
 
     def save(self, *args, **kwargs):
 
-        """Define quantity_in_line."""
+        """Определить количество в  строке."""
         first_two = self.size_line[:2]
         second_two = self.size_line[3:]
         self.quantity_in_line = (int(second_two) - int(first_two) + 2) // 2
 
-        """Define an old_price if discount existing."""
+        """Определите old_price, если скидка существует."""
         if self.discount is not None:
             self.old_price = self.actual_price
             self.actual_price = int(

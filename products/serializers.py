@@ -4,15 +4,19 @@ from .models import *
 
 class CollectionsSerializer(serializers.ModelSerializer):
     """перевод в JSON."""
+
     class Meta:
         model = Collection
         fields = '__all__'
 
+
 class ProductStylesSerializer(serializers.ModelSerializer):
     """Перевод данных о вариантах продукта в формат JSON."""
+
     class Meta:
         model = ProductStyles
         fields = '__all__'
+
 
 class ProductsSerializer(serializers.ModelSerializer):
     """варианты продукта в JSON."""
@@ -38,6 +42,7 @@ class ProductsInCollectionSerializer(serializers.ModelSerializer):
 
 class ProductFavoriteSerializer(serializers.ModelSerializer):
     """Сериализация для проверки like/Unlike"""
+
     class Meta:
         model = Product
         fields = ['id', 'title', 'favorite']

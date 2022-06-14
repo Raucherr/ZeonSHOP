@@ -49,7 +49,7 @@ class SocialTypesAdmin(admin.ModelAdmin):
 @admin.register(FooterHeaderObjects)
 class FooterHeaderObjectsAdmin(admin.ModelAdmin):
     def has_add_permission(self, request):
-        """limit for add Footer Header Objects."""
+        """ограничение для добавления объектов нижнего колонтитула Верхнего колонтитула."""
         if self.model.objects.count() >= 1:
             return False
         return super().has_add_permission(request)
@@ -58,7 +58,7 @@ class FooterHeaderObjectsAdmin(admin.ModelAdmin):
 @admin.register(PublicOffer)
 class PublicOfferAdmin(admin.ModelAdmin):
     def has_add_permission(self, request):
-        """limit for add Public Offer."""
+        """лимит на добавление Публичной оферты."""
         if self.model.objects.count() >= 1:
             return False
         return super().has_add_permission(request)
@@ -67,7 +67,7 @@ class PublicOfferAdmin(admin.ModelAdmin):
 @admin.register(SliderMainPage)
 class SliderMainPageAdmin(admin.ModelAdmin):
     def has_add_permission(self, request):
-        """limit for add Slider Main Page."""
+        """ограничение для главной страницы добавления слайдера."""
         if self.model.objects.count() >= 1:
             return False
         return super().has_add_permission(request)

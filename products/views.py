@@ -34,8 +34,6 @@ class CollectionDetailView(generics.ListAPIView):
     pagination_class = ProductsInCollectionPagination12
 
 
-
-
 class ProductsNoveltiesPagination(PageNumberPagination):
     """Установите определенную нумерацию страниц для списка продуктов в определенной коллекции"""
 
@@ -77,7 +75,7 @@ class ProductLikeView(generics.RetrieveUpdateAPIView):
 
 
 class ProductsFavoritesView(generics.ListAPIView):
-    """List all 'Favorites' of Products."""
+    """список избранных."""
     queryset = Product.objects.filter(favorite=True)
     serializer_class = ProductsSerializer
     pagination_class = ProductsInCollectionPagination12
