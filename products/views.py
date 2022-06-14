@@ -2,8 +2,7 @@ from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.pagination import PageNumberPagination
 from .models import Collection, Product
-from .serializers import CollectionsSerializer, ProductsSerializer,\
-    ProductsInCollectionSerializer
+from .serializers import *
 
 
 class ListCollectionsPagination(PageNumberPagination):
@@ -69,3 +68,16 @@ class ProductDetailView(generics.RetrieveAPIView):
     """Детальный вид объекта Product по id/pk."""
     queryset = Product.objects.all()
     serializer_class = ProductsSerializer
+
+
+class ProductLikeView(generics.RetrieveUpdateAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductFavoriteSerializer
+    lookup_field = 'pk'
+
+
+class ProductsFavoritesView(generics.ListAPIView):
+    """List all 'Favorites' of Products."""
+    queryset = Product.objects.filter(favorite=True)
+    serializer_class = ProductsSerializer
+    pagination_class = ProductsInCollectionPagination12

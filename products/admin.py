@@ -20,3 +20,5 @@ class ProductAdmin(admin.ModelAdmin):
     inlines = [ProductObjectsAdmin]
     list_display = ('title', 'article', 'size_line', 'quantity_in_line',
                     'collection')
+
+
