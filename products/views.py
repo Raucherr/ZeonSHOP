@@ -1,4 +1,4 @@
-from rest_framework import generics
+from rest_framework import generics, permissions
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.pagination import PageNumberPagination
 from .models import Collection, Product
@@ -12,7 +12,7 @@ class ListCollectionsPagination(PageNumberPagination):
 
 
 class CollectionsListView(generics.ListAPIView):
-    """VПросмотреть, чтобы просмотреть все коллекции."""
+    """Просмотреть, чтобы просмотреть все коллекции."""
 
     queryset = Collection.objects.all()
     serializer_class = CollectionsSerializer
@@ -79,3 +79,21 @@ class ProductsFavoritesView(generics.ListAPIView):
     queryset = Product.objects.filter(favorite=True)
     serializer_class = ProductsSerializer
     pagination_class = ProductsInCollectionPagination12
+
+
+class ProductsCartView(generics.ListAPIView):
+    """список всех продуктов в корзины."""
+    queryset = Cart.objects.all()
+    serializer_class = CartSerializer
+
+
+class ProductCartView(generics.RetrieveUpdateDestroyAPIView):
+    """Просмотр для обновления, Удаления товара в корзине."""
+    queryset = Cart.objects.all()
+    serializer_class = CartUpdateSerializer
+
+
+class CartCreateView(generics.CreateAPIView):
+    """вьюшка добавления товара в корзину"""
+    serializer_class = CartCreateSerializer
+    permission_classes = [permissions.AllowAny]

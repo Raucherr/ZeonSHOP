@@ -99,3 +99,16 @@ class ProductStyles(models.Model):
         return f"{self.product.title}   |   {self.color}    |   {self.image}"
 
 
+class Cart(models.Model):
+    """Корзина содержит все выбранные пользователем товары."""
+    product = models.ForeignKey(ProductStyles, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
+
+    class Meta:
+        verbose_name = "Товар"
+        verbose_name_plural = "Корзина"
+
+    def __str__(self):
+        return f'{self.product.product.title} | {self.product.color}'
+
+
