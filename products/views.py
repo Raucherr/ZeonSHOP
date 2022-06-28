@@ -1,8 +1,10 @@
 from rest_framework import generics, permissions
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.pagination import PageNumberPagination
-from .models import Collection, Product
 from .serializers import *
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
 
 
 class ListCollectionsPagination(PageNumberPagination):
@@ -97,3 +99,26 @@ class CartCreateView(generics.CreateAPIView):
     """вьюшка добавления товара в корзину"""
     serializer_class = CartCreateSerializer
     permission_classes = [permissions.AllowAny]
+
+
+@api_view()
+def order_info_view(request):
+    """Возвращает всю инфу про заказ"""
+
+    return Response({
+        "Количество линеек": calculate_order_info()[0],
+        "Количество товаров": calculate_order_info()[1],
+        "Стоимость": calculate_order_info()[2],
+        "Скидка": calculate_order_info()[4],
+        "Итого к оплате": calculate_order_info()[3]
+        })
+
+
+class OrderCreateView(generics.CreateAPIView):
+    serializer_class = OrderCreateSerializer
+    queryset = Order.objects.all()
+
+
+class OrdersHistoryView(generics.ListAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrdersHistorySerializer

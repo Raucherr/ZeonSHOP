@@ -12,4 +12,7 @@ urlpatterns = [
     path('cart/', ProductsCartView.as_view(), name='cart_list'),
     path('cart/<int:pk>/', ProductCartView.as_view(), name='cart_detail'),
     path('products/add_to_cart/', CartCreateView.as_view()),
+    path('order/total_sum/', order_info_view),
+    path('order/create/', OrderCreateView.as_view()),
+    path('order/history/', OrdersHistoryView.as_view()),
 ]

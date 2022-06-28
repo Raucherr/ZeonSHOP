@@ -92,7 +92,7 @@ class SocialTypes(models.Model):
     link_to = models.CharField(max_length=255)
 
     def save(self, *args, **kwargs):
-        """Return link to Whatsapp if type of link chosen as WHATSAPP."""
+        """Возвращение ссылки на Whatsapp, если тип ссылки выбран как WHATSAPP."""
         if self.contact_type == 'WHATSAPP':
             self.link_to = 'https://wa.me/' + str(self.link_to[1:])
         super(SocialTypes, self).save(*args, **kwargs)

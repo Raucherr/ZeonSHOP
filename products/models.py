@@ -1,7 +1,9 @@
 from django.db import models
 from ckeditor.fields import RichTextField
 from colorful.fields import RGBColorField
+from phonenumber_field.modelfields import PhoneNumberField
 from django.core.exceptions import ValidationError
+from django_countries.fields import CountryField
 
 
 def size_line_validator(size_line: str):
@@ -54,7 +56,7 @@ class Product(models.Model):
                                  validators=(size_line_validator,))
     tissue_composition = models.CharField(max_length=250)
     quantity_in_line = models.PositiveIntegerField(
-        help_text='Количество в линейке, создаётся атвтоматически '
+        help_text='Количество в этой  линейке  создаётся атвтоматически '
                   'после линейки размеров.',
         blank=True)
     material = models.CharField(max_length=100)
@@ -110,5 +112,70 @@ class Cart(models.Model):
 
     def __str__(self):
         return f'{self.product.product.title} | {self.product.color}'
+
+
+def calculate_order_info():
+    """Вычисляет объекты корзины и возвращает кортеж деталей заказа."""
+    lines_amount = Cart.objects.all().count()
+    products_amount = sum(
+        i.product.product.quantity_in_line *
+        i.quantity for i in Cart.objects.all())
+    total_price = sum(
+        i.product.product.old_price * i.quantity for i in Cart.objects.all())
+    actual_price = sum(
+        i.product.product.actual_price * i.quantity for i in Cart.objects.all()
+    )
+    discount = total_price - actual_price
+    return lines_amount, products_amount, total_price, actual_price, discount
+
+
+
+ORDER_STATUSES = [
+    ('НОВЫЙ', 'НОВЫЙ'),
+    ('ОФОРМЛЕН', 'ОФОРМЛЕН'),
+    ('ОТМЕНЕН', 'ОТМЕНЕН'),
+]
+
+
+class Order(models.Model):
+    """Представляет собой объекты порядка."""
+
+    '''Данные клиентов.'''
+    name = models.CharField(max_length=100)
+    surname = models.CharField(max_length=100)
+    email = models.EmailField(max_length=250)
+    phone = PhoneNumberField(unique=False)
+    country = CountryField()
+    city = models.CharField(max_length=100)
+    created = models.DateField(auto_now_add=True)
+    status = models.CharField(max_length=10, choices=ORDER_STATUSES,
+                              default=ORDER_STATUSES[0][1],
+                              auto_created=True)
+    public_agreement = models.BooleanField(default=False)
+    ordered_products = models.ManyToManyField(Cart)
+
+    '''Рассчитать сумму заказа'''
+    lines_amount = models.PositiveIntegerField(default=0)
+    products_amount = models.PositiveIntegerField(default=0)
+    total_price = models.PositiveIntegerField(default=0)
+    actual_price = models.PositiveIntegerField(default=0)
+    discount = models.PositiveIntegerField(default=0)
+
+    def save(self, *args, **kwargs):
+        self.lines_amount = calculate_order_info()[0]
+        self.products_amount = calculate_order_info()[1]
+        self.total_price = calculate_order_info()[2]
+        self.actual_price = calculate_order_info()[3]
+        self.discount = calculate_order_info()[4]
+        super(Order, self).save(*args, **kwargs)
+
+    class Meta:
+        verbose_name = "Заказ"
+        verbose_name_plural = "Заказы"
+
+    def __str__(self):
+        return self.status
+
+
 
 
