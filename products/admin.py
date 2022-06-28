@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Collection, ProductStyles, Product
+from .models import *
 
 
 @admin.register(Collection)
@@ -21,4 +21,15 @@ class ProductAdmin(admin.ModelAdmin):
     list_display = ('title', 'article', 'size_line', 'quantity_in_line',
                     'collection')
 
+
+@admin.register(Cart)
+class CartAdmin(admin.ModelAdmin):
+    """Корзина"""
+    list_display = ('product', 'quantity')
+
+
+@admin.register(Order)
+class OrderAdmin(admin.ModelAdmin):
+    """Заказ товаров"""
+    list_display = ('status', 'created', 'discount', 'total_price', 'actual_price')
 

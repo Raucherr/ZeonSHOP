@@ -39,7 +39,7 @@ class HelpQAView(generics.ListAPIView):
 
 class ImageHelpQAView(generics.ListAPIView):
     """
-    View to get HelpQA image
+    фото для HelpQA
     """
     queryset = ImageHelpQA.objects.all()
     serializer_class = ImageHelpQASeralizer

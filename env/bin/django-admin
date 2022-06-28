@@ -1,5 +1,5 @@
 #!/bin/sh
-'''exec' "/home/emir/Рабочий стол/ZeonShop/env/bin/python3" "$0" "$@"
+'''exec' "/home/emir/Рабочий стол/ZeonShop/env/bin/python" "$0" "$@"
 ' '''
 # -*- coding: utf-8 -*-
 import re
